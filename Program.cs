@@ -27,6 +27,7 @@ namespace CryptoAlgorithms
 
             char[,] array = new char[n, M.Length];
             bool down = true;
+            string result = "";
 
             for (int i = 0, tmp = 0; i < M.Length; i++) {
                 if (tmp == n - 1 ) down = false;
@@ -38,19 +39,16 @@ namespace CryptoAlgorithms
                     else tmp--;
             }
 
-            string result = "";
-            Console.WriteLine(M);
+            
             for(int i = 0; i < n; i++)
             {
                 for(int j = 0; j < M.Length; j++)
                 {
                     if(Char.IsLetter(array[i,j]))
                         result += array[i, j];
-                    Console.Write(array[i, j] + " ");
                 }
-                Console.WriteLine();
             }
-            Console.WriteLine(result);
+
             return result;
         }
 
@@ -60,6 +58,7 @@ namespace CryptoAlgorithms
             char[,] array = new char[n, C.Length];
             bool down = true;
             int index = 0;
+            string result = "";
 
             for(int tmp2 = 0; tmp2 < n; tmp2++)
             {
@@ -67,26 +66,19 @@ namespace CryptoAlgorithms
                 {
                     if (tmp == n - 1) down = false;
                     if (tmp == 0) down = true;
+
                     if (tmp == tmp2)
                     {
                         array[tmp, i] = C[index++];
                     }
+
                     if (down) tmp++;
                     else tmp--;
                 }
             }
             
 
-            string result = "";
-            Console.WriteLine(C);
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < C.Length; j++)
-                {
-                    Console.Write(array[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
+            
             for (int i = 0; i < C.Length; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -95,7 +87,7 @@ namespace CryptoAlgorithms
                         result += array[j, i];
                 }
             }
-            Console.WriteLine(result);
+
             return result;
         }
     }

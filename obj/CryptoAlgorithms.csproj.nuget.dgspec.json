@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Michał\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms.csproj": {}
+    "C:\\Users\\Michal\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms\\CryptoAlgorithms.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Michał\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms.csproj": {
+    "C:\\Users\\Michal\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms\\CryptoAlgorithms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Michał\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms.csproj",
+        "projectUniqueName": "C:\\Users\\Michal\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms\\CryptoAlgorithms.csproj",
         "projectName": "CryptoAlgorithms",
-        "projectPath": "C:\\Users\\Michał\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms.csproj",
-        "packagesPath": "C:\\Users\\Michał\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Michał\\source\\repos\\CryptoAlgorithms\\obj\\",
+        "projectPath": "C:\\Users\\Michal\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms\\CryptoAlgorithms.csproj",
+        "packagesPath": "C:\\Users\\Michal\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Michal\\source\\repos\\CryptoAlgorithms\\CryptoAlgorithms\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Michał\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Michal\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -50,12 +47,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.0.2, 3.0.2]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

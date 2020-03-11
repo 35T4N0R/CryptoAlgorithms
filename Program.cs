@@ -11,7 +11,8 @@ namespace CryptoAlgorithms
             //coded = RailFence(3, M);
             //decoded = RailFenceDecrypt(3, C);
 
-            MatrixDecrypt("3142", "YGHACTAOPRYROPS");
+            //MatrixDecrypt("3142", "YGHACTAOPRYROPS");
+            Matrix2Decrypt("CONVENIENCE", "hecrnceyiisepsgdirntoaaesrmpnssroeebtetiaeehs");
         }
 
 
@@ -193,5 +194,173 @@ namespace CryptoAlgorithms
 
             Console.WriteLine(result);
         }
+
+        public static void Matrix2(string key, string M)
+        {
+            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string result = "";
+            int[] keyTab = new int[key.Length];
+            int x = 1;
+
+            key = key.ToLower();
+            M = M.ToLower();
+            
+            //Prepare the array key
+            for(int i = 0; i < alphabet.Length; i++)
+            {
+                for(int j = 0; j < key.Length; j++)
+                {
+                    if (alphabet[i].Equals(key[j]))
+                    {
+                        keyTab[j] = x;
+                        x++;
+                    }
+                }
+            }
+
+            //construct teh 2D array
+            double N = (double)M.Length / key.Length;
+
+            if (N % (int)N != 0) N += 1;
+
+            int n = (int)N / 1;
+
+            char[,] array = new char[n, key.Length];
+
+            //write 2D array
+            int index = 0;
+            for(int i = 0; i < n ; i++)
+            {
+                for(int j = 0; j < key.Length && index < M.Length; j++)
+                {
+                    array[i, j] = M[index++];
+                }
+            }
+
+            //Read 2D array
+            for (int g = 0; g < key.Length + 1; g++)
+            {
+                for (int i = 0; i < keyTab.Length; i++)
+                {
+                    if (g == keyTab[i])
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            result += array[j, i];
+                        }
+                    }
+                }
+            }
+
+
+
+
+            Console.WriteLine(result);
+
+            //for(int i = 0; i < keyTab.Length; i++)
+            //{
+            //    Console.Write(keyTab[i] + " ");
+                     
+            //}
+
+            //for(int i = 0; i < n; i++)
+            //{
+            //    for(int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
+
+        }
+
+        public static void Matrix2Decrypt(string key, string M)
+        {
+            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string result = "";
+            int[] keyTab = new int[key.Length];
+            int x = 1;
+
+            key = key.ToLower();
+            M = M.ToLower();
+
+            //Prepare the array key
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (alphabet[i].Equals(key[j]))
+                    {
+                        keyTab[j] = x;
+                        x++;
+                    }
+                }
+            }
+
+            //construct teh 2D array
+            double N = (double)M.Length / key.Length;
+
+            if (N % (int)N != 0) N += 1;
+
+            int n = (int)N / 1;
+
+            char[,] array = new char[n, key.Length];
+
+            //write 2D array
+            int index = 0;
+
+            int idx = M.Length % keyTab.Length;
+            int h, tmp;
+            for (int i = 1; i <= keyTab.Length; i++)
+            {
+                for(int k = 0; k < keyTab.Length; k++)
+                {
+                    if(i == keyTab[k])
+                    {   
+                        if (k + 1  <= idx || idx == 0) tmp = n;
+                        else tmp = n - 1;
+
+                        for (int j = 0; j < tmp; j++)
+                        {
+                            array[j, k] = M[index++];
+                        }
+                    }
+                }
+            }
+
+
+            //Read 2D array
+            int c = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < key.Length && c < M.Length; j++)
+                {
+                    result += array[i,j];
+                    c++;
+                }
+            }
+
+
+
+
+            Console.WriteLine(result);
+
+            //for (int i = 0; i < keyTab.Length; i++)
+            //{
+            //    Console.Write(keyTab[i] + " ");
+
+            //}
+
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
+        }
+
+
     }
 }

@@ -7,12 +7,14 @@ namespace CryptoAlgorithms
         static void Main(string[] args)
         {
             //string coded, decoded;
-            //string M = "TEKSTTESTOWYTAKISE", C = "TTTTSESTSOYAIEKEWK";
+            //string M = "TEKSTTESTOWYTAKISE", C = "LATEOZJSSPRMEU";
             //coded = RailFence(3, M);
             //decoded = RailFenceDecrypt(3, C);
-
+            //Console.WriteLine(decoded);
             //MatrixDecrypt("3142", "YGHACTAOPRYROPS");
-            Matrix2Decrypt("CONVENIENCE", "hecrnceyiisepsgdirntoaaesrmpnssroeebtetiaeehs");
+            //Matrix3Decrypt("CONVENIENCE", "heespnirrsseeseiyascbtemgepnandictrtahsoieero");
+            //Console.WriteLine(NWD(452, 23));
+            Cesar(5, 7, "CRYPTOGRAPHY");
         }
 
 
@@ -361,6 +363,236 @@ namespace CryptoAlgorithms
             //}
         }
 
+        public static void Matrix3(string key, string M) {
 
+            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string result = "";
+            int[] keyTab = new int[key.Length];
+            int x = 1;
+
+            key = key.ToLower();
+            M = M.ToLower();
+
+            //Prepare the array key
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (alphabet[i].Equals(key[j]))
+                    {
+                        keyTab[j] = x;
+                        x++;
+                    }
+                }
+            }
+            int sum = 0;
+            int n = 0;
+            for(int i = 1; i <= keyTab.Length; i++)
+            {
+                for(int j = 0; j < keyTab.Length; j++)
+                {
+                    if(i == keyTab[j])
+                    {
+                        sum += (j + 1);
+                    }
+                }
+                if (sum == M.Length)
+                {
+                    n = i;
+                    break;
+                }
+            }
+
+            char[,] array = new char[n, keyTab.Length];
+
+
+            //Write 2D array
+            int index = 0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int k = 0; k < keyTab.Length; k++)
+                {
+                    if (i == keyTab[k])
+                    {
+                        //if (k + 1 <= idx || idx == 0) tmp = n;
+                        //else tmp = n - 1;
+
+                        for (int j = 0; j < k + 1; j++)
+                        {
+                            array[i - 1, j] = M[index++];
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //Read 2D array
+            for (int g = 0; g < key.Length + 1; g++)
+            {
+                for (int i = 0; i < keyTab.Length; i++)
+                {
+                    if (g == keyTab[i])
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            if(Char.IsLetter(array[j, i]))
+                                result += array[j, i];
+                        }
+                        //result += " ";
+                    }
+                }
+            }
+            Console.WriteLine(result);
+
+            //Console.WriteLine(n);
+
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < keyTab.Length; j++)
+                {
+                    Console.Write(array[i, j] + ". ");
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+        public static void Matrix3Decrypt(string key, string M)
+        {
+            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string result = "";
+            int[] keyTab = new int[key.Length];
+            int x = 1;
+
+            key = key.ToLower();
+            M = M.ToLower();
+
+            //Prepare the array key
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (alphabet[i].Equals(key[j]))
+                    {
+                        keyTab[j] = x;
+                        x++;
+                    }
+                }
+            }
+
+            int sum = 0;
+            int n = 0;
+            for (int i = 1; i <= keyTab.Length; i++)
+            {
+                for (int j = 0; j < keyTab.Length; j++)
+                {
+                    if (i == keyTab[j])
+                    {
+                        sum += (j + 1);
+                    }
+                }
+                if (sum == M.Length)
+                {
+                    n = i;
+                    break;
+                }
+            }
+
+            char[,] array = new char[n, keyTab.Length];
+
+            int[] charNumbers = new int[keyTab.Length];
+
+            for(int i = 0; i < keyTab.Length; i++)
+            {
+                charNumbers[keyTab[i] - 1] = i + 1;
+            }
+            //for (int i = 0; i < charNumbers.Length; i++)
+            //{
+            //    Console.Write(charNumbers[i] + " ");
+
+            //}
+
+            x = 0;
+            for (int i = 1; i <= keyTab.Length; i++)
+            {
+                for (int k = 0; k < keyTab.Length; k++)
+                {
+                    if (i == keyTab[k])
+                    {
+                        for (int j = 0; j < n && x < M.Length; j++)
+                        {
+                            if (k + 1 <= charNumbers[j]) array[j, k] = M[x++];
+                            else array[j, k] = ' ';
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < keyTab.Length; j++)
+                {
+                    if (Char.IsLetter(array[i, j])) result += array[i, j];
+                    Console.Write(array[i, j] + ". ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine(result);
+        }
+
+        public static void Cesar(int k0, int k1, string M)
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            alphabet = alphabet.ToUpper();
+            string result = "";
+            if (NWD(k1, 26) != 1) return;
+            if (NWD(k0, 26) != 1) return;
+
+            for (int i = 0; i < M.Length; i++)
+            {
+                result += alphabet[(((M[i] - 65) * k1 + k0) % 26)];
+            }
+
+            Console.WriteLine(result);
+
+
+
+
+           /* int tmp; //zły wzór patrzyłem na wzór do deszyfowania
+            int opposite = 0;
+            for(int i = 0; i < 26; i++)
+            {
+                tmp = (k1 * i) % 26;
+                if(tmp == 1)
+                {
+                    opposite = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < M.Length; i++)
+            {   
+                result += alphabet[((M[i] + (26 - k0)) * opposite) % 26];
+
+            }
+
+            Console.WriteLine(result);*/
+
+        }
+
+        public static int NWD(int k0, int k1)
+        {
+            while (k0 != k1)
+            {
+                if (k0 > k1)
+                    k0 -= k1;
+                else
+                    k1 -= k0;
+            }
+
+            return k0;
+        }
     }
 }

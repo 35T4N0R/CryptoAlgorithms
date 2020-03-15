@@ -14,7 +14,9 @@ namespace CryptoAlgorithms
             //MatrixDecrypt("3142", "YGHACTAOPRYROPS");
             //Matrix3Decrypt("CONVENIENCE", "heespnirrsseeseiyascbtemgepnandictrtahsoieero");
             //Console.WriteLine(NWD(452, 23));
-            Cesar(5, 7, "CRYPTOGRAPHY");
+            //Cesar(5, 7, "CRYPTOGRAPHY");
+            //CesarDecrypt(5, 7, "TURGIZVUFGCR");
+            VigenereDecrypt("pole", "RFJTICRVPDSC");
         }
 
 
@@ -581,6 +583,112 @@ namespace CryptoAlgorithms
             Console.WriteLine(result);*/
 
         }
+
+        public static void CesarDecrypt(int k0, int k1, string M)
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            alphabet = alphabet.ToUpper();
+            string result = "";
+            if (NWD(k1, 26) != 1) return;
+            if (NWD(k0, 26) != 1) return;
+
+            
+
+            Console.WriteLine(result);
+
+
+
+
+            int tmp;
+             int opposite = 0;
+             for(int i = 0; i < 26; i++)
+             {
+                 tmp = (k1 * i) % 26;
+                 if(tmp == 1)
+                 {
+                     opposite = i;
+                     break;
+                 }
+             }
+             for (int i = 0; i < M.Length; i++)
+             {   
+                 result += alphabet[(((M[i] - 65) + (26 - k0)) * opposite) % 26];
+
+             }
+
+             Console.WriteLine(result);
+        }
+
+        public static void Vigenere(string key, string M)
+        {
+            key = key.ToUpper();
+            M = M.ToUpper();
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string result = "";
+            char[,] array = new char[26, 26]; 
+            for (int i = 0; i < 26; i++)
+            {
+                for (int j = 0; j < 26; j++)
+                {
+                    array[i, j] = alphabet[(j + i) % 26];
+                    //Console.Write(array[i, j] + " ");
+                }
+                //Console.WriteLine();
+            }
+
+            string usefullKey = "";
+            int x = 0, y = 0;
+            while (usefullKey.Length < M.Length)
+            {
+                usefullKey += key[y++ % key.Length];
+            }
+
+            Console.WriteLine(usefullKey);
+
+            for (int i = 0; i < M.Length; i++)
+            {
+                result += array[usefullKey[i] - 65, M[i] - 65];
+            }
+            Console.WriteLine(result.ToUpper());
+        }
+
+        public static void VigenereDecrypt(string key, string M) 
+        {
+            key = key.ToUpper();
+            M = M.ToUpper();
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            alphabet = alphabet.ToUpper();
+            string result = "";
+            char[,] array = new char[26, 26];
+            for (int i = 0; i < 26; i++)
+            {
+                for (int j = 0; j < 26; j++)
+                {
+                    array[i, j] = alphabet[(j + i) % 26];
+                    //Console.Write(array[i, j] + " ");
+                }
+                //Console.WriteLine();
+            }
+
+            string usefullKey = "";
+            int x = 0, y = 0;
+            while (usefullKey.Length < M.Length)
+            {
+                usefullKey += key[y++ % key.Length];
+            }
+
+            Console.WriteLine(usefullKey);
+            for (int j = 0; j < M.Length; j++)
+            {
+                for (int i = 0; i < 26; i++)
+                {
+                    if(array[usefullKey[j] - 65,i] == M[j])
+                        result += alphabet[i];
+                }
+            } 
+            Console.WriteLine(result);
+        }
+
 
         public static int NWD(int k0, int k1)
         {

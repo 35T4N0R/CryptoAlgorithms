@@ -10,16 +10,20 @@ namespace CryptoAlgorithms
             //string coded, decoded;
             //string M = "TEKSTTESTOWYTAKISE", C = "LATEOZJSSPRMEU";
             //coded = RailFence(3, M);
+            //Console.WriteLine(coded);
             //decoded = RailFenceDecrypt(3, C);
             //Console.WriteLine(decoded);
-            //MatrixDecrypt("3142", "YGHACTAOPRYROPS");
-            //Matrix3("CONVENIENCE","HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
-            //Matrix3Decrypt("ABC", "COVIECNENEN");
+            //Matrix("34152", "CRYPTOGRAPHYOSA");
+            //MatrixDecrypt("34152", "YPCTRRAOPGOSHAY");
+            //Matrix2("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
+            //Matrix2Decrypt("CONVENIENCE", "RSTACRTPIEAESNEYSTEEMGIEROOHSRSEHBNIICEEPDASN");
+            Matrix3("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
             Matrix3Decrypt("CONVENIENCE", "HEESPNIRRSSEESEIYASCBTEMGEPNANDICTRTAHSOIEERO");
             //Console.WriteLine(NWD(452, 23));
             //Cesar(5, 7, "CRYPTOGRAPHY");
             //CesarDecrypt(5, 7, "TURGIZVUFGCR");
-            //VigenereDecrypt("pole", "RFJTICRVPDSC");
+            //Vigenere("BREAK", "CRYPTOGRAPHY");
+            //VigenereDecrypt("BREAK", "DICPDPXVAZIP");
         }
 
 
@@ -123,20 +127,32 @@ namespace CryptoAlgorithms
                 }
             }
 
-            //Read 2D array
-            int y = 0, x;
-
-            while(y < keyTab.Length)
+            for (int i = 0; i < n; i++)
             {
-                x = keyTab[y++];
-                for(int i = 0; i < n; i++)
+                for (int j = 0; j < keyTab.Length; j++)
                 {
-                    if (Char.IsLetter(array[i, x - 1]))
+                    Console.Write(array[i, j]);
+                }
+                Console.WriteLine();
+            }
+
+            //Read 2D array
+            int y = 0;
+
+            while(y < n)
+            {
+
+                for(int i = 0; i < keyTab.Length; i++)
+                {
+                    if (Char.IsLetter(array[y, keyTab[i] - 1]))
                     {
-                        result += array[i, x - 1];
+                        result += array[y, keyTab[i] - 1];
                     }
                 }
+
+                y++;
             }
+
             Console.WriteLine(result);
         }
 
@@ -164,29 +180,24 @@ namespace CryptoAlgorithms
             int index = 0;
             string result = "";
 
-            int idx = M.Length % keyTab.Length;
-            int x, tmp;
-            for (int i = 0; i < keyTab.Length; i++)
+            for (int i = 0; i < n; i++)
             {
-                x = keyTab[i];
 
-                if (x <= idx || idx == 0) tmp = n;
-                else tmp = n - 1;
-
-                for (int j = 0; j < tmp ; j++)
+                for(int j = 0; j < keyTab.Length && index < M.Length; j++)
                 {
-                    array[j, x-1] = M[index++];
+                    array[i, keyTab[j] - 1] = M[index++];
                 }
+
             }
 
-            /*for(int i = 0; i < n; i++)
+            for(int i = 0; i < n; i++)
             {
                 for(int j = 0; j < keyTab.Length; j++)
                 {
                     Console.Write(array[i, j]);
                 }
                 Console.WriteLine();
-            }*/
+            }
 
 
             //Read Array
@@ -262,22 +273,22 @@ namespace CryptoAlgorithms
 
 
 
-            Console.WriteLine(result);
+            Console.WriteLine(result.ToUpper());
 
             //for(int i = 0; i < keyTab.Length; i++)
             //{
             //    Console.Write(keyTab[i] + " ");
-                     
+
             //}
 
-            //for(int i = 0; i < n; i++)
-            //{
-            //    for(int j = 0; j < keyTab.Length; j++)
-            //    {
-            //        Console.Write(array[i, j]);
-            //    }
-            //    Console.WriteLine();
-            //}
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < keyTab.Length; j++)
+                {
+                    Console.Write(array[i, j]);
+                }
+                Console.WriteLine();
+            }
 
         }
 
@@ -350,7 +361,7 @@ namespace CryptoAlgorithms
 
 
 
-            Console.WriteLine(result);
+            Console.WriteLine(result.ToUpper());
 
             //for (int i = 0; i < keyTab.Length; i++)
             //{
@@ -358,14 +369,14 @@ namespace CryptoAlgorithms
 
             //}
 
-            //for (int i = 0; i < n; i++)
-            //{
-            //    for (int j = 0; j < keyTab.Length; j++)
-            //    {
-            //        Console.Write(array[i, j]);
-            //    }
-            //    Console.WriteLine();
-            //}
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < keyTab.Length; j++)
+                {
+                    Console.Write(array[i, j]);
+                }
+                Console.WriteLine();
+            }
         }
 
         public static void Matrix3(string key, string M) {
@@ -393,7 +404,7 @@ namespace CryptoAlgorithms
 
             for (int i = 0; i < keyTab.Length; i++)
             {
-                Console.Write(keyTab[i] + " ");
+                Console.Write(keyTab[i] + ". ");
             }
 
             int sum = 0;
@@ -414,7 +425,7 @@ namespace CryptoAlgorithms
                 }else if(sum < M.Length && i >= keyTab.Length)
                 {
                     n += i;
-                    i = 1;
+                    i = 0;
                 }
             }
 
@@ -441,7 +452,7 @@ namespace CryptoAlgorithms
                         break;
                     }else if(i % keyTab.Length == 0)
                     {
-                        k = 2;
+                        k = keyTab.Length - 1;
 
                         for (int j = 0; j < k + 1 && index < M.Length; j++)
                         {
@@ -527,7 +538,7 @@ namespace CryptoAlgorithms
                 else if (sum < M.Length && i >= keyTab.Length)
                 {
                     n += i;
-                    i = 1;
+                    i = 0;
                 }
             }
             //Console.WriteLine(n);
@@ -565,17 +576,18 @@ namespace CryptoAlgorithms
                 }
             }
 
+            Console.WriteLine();
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < keyTab.Length; j++)
                 {
                     if (Char.IsLetter(array[i, j])) result += array[i, j];
-                    Console.Write(array[i, j] + " ");
+                    Console.Write(array[i, j] + ". ");
                 }
                 Console.WriteLine();
             }
 
-            Console.WriteLine(result);
+            Console.WriteLine(result.ToUpper());
         }
 
         public static void Cesar(int k0, int k1, string M)

@@ -7,33 +7,56 @@ namespace CryptoAlgorithms
         static void Main(string[] args)
         {
             //HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION
-            //string coded, decoded;
-            //string M = "TEKSTTESTOWYTAKISE", C = "LATEOZJSSPRMEU";
-            //coded = RailFence(3, M);
-            //Console.WriteLine(coded);
-            //decoded = RailFenceDecrypt(3, C);
-            //Console.WriteLine(decoded);
-            //Matrix("34152", "CRYPTOGRAPHYOSA");
-            //MatrixDecrypt("34152", "YPCTRRAOPGOSHAY");
-            //Matrix2("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
-            //Matrix2Decrypt("CONVENIENCE", "RSTACRTPIEAESNEYSTEEMGIEROOHSRSEHBNIICEEPDASN");
+
+            //Rail Fence
+            Console.WriteLine("-------------Rail Fence-------------");
+            RailFence(3, "CRYPTOGRAPHY");
+            RailFenceDecrypt(3, "CTARPORPYYGH");
+            Console.WriteLine();
+
+            //Matrix 2a
+            Console.WriteLine("-------------Matrix 2a-------------");
+            Matrix("34152", "CRYPTOGRAPHYOSA");
+            MatrixDecrypt("34152", "YPCTRRAOPGOSHAY");
+            Console.WriteLine();
+
+            //Matrix 2b
+            Console.WriteLine("-------------Matrix 2b-------------");
+            Matrix2("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
+            Matrix2Decrypt("CONVENIENCE", "HECRNCEYIISEPSGDIRNTOAAESRMPNSSROEEBTETIAEEHS");
+            Console.WriteLine();
+
+            //Matrix 2c
+            Console.WriteLine("-------------Matrix 2c-------------");
             Matrix3("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
             Matrix3Decrypt("CONVENIENCE", "HEESPNIRRSSEESEIYASCBTEMGEPNANDICTRTAHSOIEERO");
-            //Console.WriteLine(NWD(452, 23));
-            //Cesar(5, 7, "CRYPTOGRAPHY");
-            //CesarDecrypt(5, 7, "TURGIZVUFGCR");
-            //Vigenere("BREAK", "CRYPTOGRAPHY");
-            //VigenereDecrypt("BREAK", "DICPDPXVAZIP");
+            Console.WriteLine();
+
+            //Cesar
+            Console.WriteLine("-------------Affine Cipher-------------");
+            Cesar(5, 7, "CRYPTOGRAPHY");
+            CesarDecrypt(5, 7, "TURGIZVUFGCR");
+            Console.WriteLine();
+
+            //Vigenere
+            Console.WriteLine("-------------Vigenere Cipher-------------");
+            Vigenere("BREAK", "CRYPTOGRAPHY");
+            VigenereDecrypt("BREAK", "DICPDPXVAZIP");
+            Console.WriteLine();
         }
 
 
 
-        public static string RailFence(int n, string M) {
+        public static void RailFence(int n, string M)
+        {
+            M = M.ToUpper();
 
+            //Construct 2D array
             char[,] array = new char[n, M.Length];
             bool down = true;
             string result = "";
 
+            //Write 2D array
             for (int i = 0, tmp = 0; i < M.Length; i++) {
                 if (tmp == n - 1 ) down = false;
                 if (tmp == 0) down = true;
@@ -44,7 +67,7 @@ namespace CryptoAlgorithms
                     else tmp--;
             }
 
-            
+            //Read 2D array
             for(int i = 0; i < n; i++)
             {
                 for(int j = 0; j < M.Length; j++)
@@ -54,17 +77,20 @@ namespace CryptoAlgorithms
                 }
             }
 
-            return result;
+            Console.WriteLine("Zakodowany tekst: " + result);
         }
 
-        public static string RailFenceDecrypt(int n, string C)
+        public static void RailFenceDecrypt(int n, string C)
         {
+            C = C.ToUpper();
 
+            //Construct 2D array
             char[,] array = new char[n, C.Length];
             bool down = true;
             int index = 0;
             string result = "";
 
+            //Write 2D array
             for(int tmp2 = 0; tmp2 < n; tmp2++)
             {
                 for (int i = 0, tmp = 0; i < C.Length; i++)
@@ -83,7 +109,7 @@ namespace CryptoAlgorithms
             }
             
 
-            
+            //Read 2D array
             for (int i = 0; i < C.Length; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -93,12 +119,13 @@ namespace CryptoAlgorithms
                 }
             }
 
-            return result;
+            Console.WriteLine("Odkodowany tekst: " + result);
         }
 
         public static void Matrix(string key, string M)
         {
-           
+            M = M.ToUpper();
+
             //construct an 2D array
             double N = (double)M.Length / key.Length;
 
@@ -116,7 +143,7 @@ namespace CryptoAlgorithms
                 keyTab[i] = Convert.ToInt32(Convert.ToString(key[i]));
             }
 
-            //Write array
+            //Write 2D array
             int index = 0;
             string result = "";
             for(int i = 0; i < n; i++)
@@ -127,14 +154,15 @@ namespace CryptoAlgorithms
                 }
             }
 
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < keyTab.Length; j++)
-                {
-                    Console.Write(array[i, j]);
-                }
-                Console.WriteLine();
-            }
+            //Print 2D array
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
 
             //Read 2D array
             int y = 0;
@@ -153,11 +181,12 @@ namespace CryptoAlgorithms
                 y++;
             }
 
-            Console.WriteLine(result);
+            Console.WriteLine("Zakodowany tekst: " + result);
         }
 
         public static void MatrixDecrypt(string key, string M)
         {
+            M = M.ToUpper();
 
             //construct an 2D array
             double N = (double)M.Length / key.Length;
@@ -190,14 +219,15 @@ namespace CryptoAlgorithms
 
             }
 
-            for(int i = 0; i < n; i++)
-            {
-                for(int j = 0; j < keyTab.Length; j++)
-                {
-                    Console.Write(array[i, j]);
-                }
-                Console.WriteLine();
-            }
+            //Print 2D array
+            //for(int i = 0; i < n; i++)
+            //{
+            //    for(int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
 
 
             //Read Array
@@ -210,18 +240,18 @@ namespace CryptoAlgorithms
                 }
             }
 
-            Console.WriteLine(result);
+            Console.WriteLine("Odkodowany tekst: " + result);
         }
 
         public static void Matrix2(string key, string M)
         {
-            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             int[] keyTab = new int[key.Length];
             int x = 1;
 
-            key = key.ToLower();
-            M = M.ToLower();
+            key = key.ToUpper();
+            M = M.ToUpper();
             
             //Prepare the array key
             for(int i = 0; i < alphabet.Length; i++)
@@ -264,7 +294,8 @@ namespace CryptoAlgorithms
                     {
                         for (int j = 0; j < n; j++)
                         {
-                            result += array[j, i];
+                            if(Char.IsLetter(array[j, i]))
+                                result += array[j, i];
                         }
                     }
                 }
@@ -273,34 +304,35 @@ namespace CryptoAlgorithms
 
 
 
-            Console.WriteLine(result.ToUpper());
+            Console.WriteLine("Zakodowany tekst: " + result);
 
+            //Print array with keys
             //for(int i = 0; i < keyTab.Length; i++)
             //{
             //    Console.Write(keyTab[i] + " ");
-
             //}
 
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < keyTab.Length; j++)
-                {
-                    Console.Write(array[i, j]);
-                }
-                Console.WriteLine();
-            }
+            //Print 2D array
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
 
         }
 
         public static void Matrix2Decrypt(string key, string M)
         {
-            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             int[] keyTab = new int[key.Length];
             int x = 1;
 
-            key = key.ToLower();
-            M = M.ToLower();
+            key = key.ToUpper();
+            M = M.ToUpper();
 
             //Prepare the array key
             for (int i = 0; i < alphabet.Length; i++)
@@ -361,33 +393,34 @@ namespace CryptoAlgorithms
 
 
 
-            Console.WriteLine(result.ToUpper());
+            Console.WriteLine("Odkodowany tekst: " + result);
 
+            //Print array with keys
             //for (int i = 0; i < keyTab.Length; i++)
             //{
             //    Console.Write(keyTab[i] + " ");
-
             //}
 
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < keyTab.Length; j++)
-                {
-                    Console.Write(array[i, j]);
-                }
-                Console.WriteLine();
-            }
+            //Print 2D array
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
         }
 
         public static void Matrix3(string key, string M) {
 
-            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             int[] keyTab = new int[key.Length];
             int x = 1;
 
-            key = key.ToLower();
-            M = M.ToLower();
+            key = key.ToUpper();
+            M = M.ToUpper();
 
             //Prepare the array key
             for (int i = 0; i < alphabet.Length; i++)
@@ -402,10 +435,11 @@ namespace CryptoAlgorithms
                 }
             }
 
-            for (int i = 0; i < keyTab.Length; i++)
-            {
-                Console.Write(keyTab[i] + ". ");
-            }
+            //Print array with keys
+            //for (int i = 0; i < keyTab.Length; i++)
+            //{
+            //    Console.Write(keyTab[i] + ". ");
+            //}
 
             int sum = 0;
             int n = 0;
@@ -441,10 +475,7 @@ namespace CryptoAlgorithms
                 {
                     if ((i % keyTab.Length) == keyTab[k])
                     {
-                        
-                        //if (k + 1 <= idx || idx == 0) tmp = n;
-                        //else tmp = n - 1;
-
+                       
                         for (int j = 0; j < k + 1 && index < M.Length; j++)
                         {
                             array[i - 1, j] = M[index++];
@@ -479,31 +510,31 @@ namespace CryptoAlgorithms
                     }
                 }
             }
-            Console.WriteLine(result.ToUpper());
+            Console.WriteLine("Zakodowany tekst: " + result);
 
             //Console.WriteLine(n);
 
-
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < keyTab.Length; j++)
-                {
-                    Console.Write(array[i, j] + ". ");
-                }
-                Console.WriteLine();
-            }
+            //Print 2D array
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = 0; j < keyTab.Length; j++)
+            //    {
+            //        Console.Write(array[i, j] + ". ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
         }
 
         public static void Matrix3Decrypt(string key, string M)
         {
-            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             int[] keyTab = new int[key.Length];
             int x = 1;
 
-            key = key.ToLower();
-            M = M.ToLower();
+            key = key.ToUpper();
+            M = M.ToUpper();
 
             //Prepare the array key
             for (int i = 0; i < alphabet.Length; i++)
@@ -551,6 +582,8 @@ namespace CryptoAlgorithms
                 charNumbers[keyTab[i] - 1] = i + 1;
 
             }
+
+            //Print array with number of chars for each row
             //for (int i = 0; i < charNumbers.Length; i++)
             //{
             //    Console.Write(charNumbers[i] + " ");
@@ -576,24 +609,23 @@ namespace CryptoAlgorithms
                 }
             }
 
-            Console.WriteLine();
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < keyTab.Length; j++)
                 {
                     if (Char.IsLetter(array[i, j])) result += array[i, j];
-                    Console.Write(array[i, j] + ". ");
+                    //Console.Write(array[i, j] + ". "); //print values of 2D array
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
 
-            Console.WriteLine(result.ToUpper());
+            Console.WriteLine("Odkodowany tekst: " + result);
         }
 
         public static void Cesar(int k0, int k1, string M)
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            alphabet = alphabet.ToUpper();
+            M = M.ToUpper();
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             if (NWD(k1, 26) != 1) return;
             if (NWD(k0, 26) != 1) return;
@@ -603,45 +635,43 @@ namespace CryptoAlgorithms
                 result += alphabet[(((M[i] - 65) * k1 + k0) % 26)];
             }
 
-            Console.WriteLine(result);
+            Console.WriteLine("Zakodowany tekst: " + result);
 
         }
 
         public static void CesarDecrypt(int k0, int k1, string M)
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            alphabet = alphabet.ToUpper();
+            M = M.ToUpper();
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             if (NWD(k1, 26) != 1) return;
             if (NWD(k0, 26) != 1) return;
 
-            Console.WriteLine(result);
-
             int tmp;
-             int opposite = 0;
-             for(int i = 0; i < 26; i++)
-             {
-                 tmp = (k1 * i) % 26;
-                 if(tmp == 1)
-                 {
-                     opposite = i;
-                     break;
-                 }
-             }
-             for (int i = 0; i < M.Length; i++)
-             {   
-                 result += alphabet[(((M[i] - 65) + (26 - k0)) * opposite) % 26];
+            int opposite = 0;
+            for(int i = 0; i < 26; i++)
+            {
+                tmp = (k1 * i) % 26;
+                if(tmp == 1)
+                {
+                    opposite = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < M.Length; i++)
+            {   
+                result += alphabet[(((M[i] - 65) + (26 - k0)) * opposite) % 26];
 
-             }
+            }
 
-             Console.WriteLine(result);
+            Console.WriteLine("Odkodowany tekst: " + result);
         }
 
         public static void Vigenere(string key, string M)
         {
             key = key.ToUpper();
             M = M.ToUpper();
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             char[,] array = new char[26, 26]; 
             for (int i = 0; i < 26; i++)
@@ -649,33 +679,34 @@ namespace CryptoAlgorithms
                 for (int j = 0; j < 26; j++)
                 {
                     array[i, j] = alphabet[(j + i) % 26];
-                    //Console.Write(array[i, j] + " ");
+                    //Console.Write(array[i, j] + " "); //print values of alphabet 2D array
                 }
                 //Console.WriteLine();
             }
 
             string usefullKey = "";
-            int x = 0, y = 0;
+            int y = 0;
             while (usefullKey.Length < M.Length)
             {
                 usefullKey += key[y++ % key.Length];
             }
 
-            Console.WriteLine(usefullKey);
+            //Print extended key
+            //Console.WriteLine(usefullKey);
 
             for (int i = 0; i < M.Length; i++)
             {
                 result += array[usefullKey[i] - 65, M[i] - 65];
             }
-            Console.WriteLine(result.ToUpper());
+
+            Console.WriteLine("Zakodowany tekst: " + result);
         }
 
         public static void VigenereDecrypt(string key, string M) 
         {
             key = key.ToUpper();
             M = M.ToUpper();
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            alphabet = alphabet.ToUpper();
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             char[,] array = new char[26, 26];
             for (int i = 0; i < 26; i++)
@@ -683,19 +714,21 @@ namespace CryptoAlgorithms
                 for (int j = 0; j < 26; j++)
                 {
                     array[i, j] = alphabet[(j + i) % 26];
-                    //Console.Write(array[i, j] + " ");
+                    //Console.Write(array[i, j] + " "); //print values of alphabet 2D array
                 }
                 //Console.WriteLine();
             }
 
             string usefullKey = "";
-            int x = 0, y = 0;
+            int y = 0;
             while (usefullKey.Length < M.Length)
             {
                 usefullKey += key[y++ % key.Length];
             }
 
-            Console.WriteLine(usefullKey);
+            //Print extended key
+            //Console.WriteLine(usefullKey);
+
             for (int j = 0; j < M.Length; j++)
             {
                 for (int i = 0; i < 26; i++)
@@ -704,7 +737,7 @@ namespace CryptoAlgorithms
                         result += alphabet[i];
                 }
             } 
-            Console.WriteLine(result);
+            Console.WriteLine("Odkodowany tekst: " + result);
         }
 
 

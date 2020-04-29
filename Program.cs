@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CryptoAlgorithms
 {
@@ -9,40 +10,48 @@ namespace CryptoAlgorithms
             //HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION
 
             //Rail Fence
-            Console.WriteLine("-------------Rail Fence-------------");
-            RailFence(3, "CRYPTOGRAPHY");
-            RailFenceDecrypt(3, "CTARPORPYYGH");
+            //Console.WriteLine("-------------Rail Fence-------------");
+            //RailFence(3, "CRYPTOGRAPHY");
+            //RailFenceDecrypt(3, "CTARPORPYYGH");
+            //Console.WriteLine();
+
+            ////Matrix 2a
+            //Console.WriteLine("-------------Matrix 2a-------------");
+            //Matrix("34152", "CRYPTOGRAPHYOSA");
+            //MatrixDecrypt("34152", "YPCTRRAOPGOSHAY");
+            //Console.WriteLine();
+
+            ////Matrix 2b
+            //Console.WriteLine("-------------Matrix 2b-------------");
+            //Matrix2("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
+            //Matrix2Decrypt("CONVENIENCE", "HECRNCEYIISEPSGDIRNTOAAESRMPNSSROEEBTETIAEEHS");
+            //Console.WriteLine();
+
+            ////Matrix 2c
+            //Console.WriteLine("-------------Matrix 2c-------------");
+            //Matrix3("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
+            //Matrix3Decrypt("CONVENIENCE", "HEESPNIRRSSEESEIYASCBTEMGEPNANDICTRTAHSOIEERO");
+            //Console.WriteLine();
+
+            ////Cesar
+            //Console.WriteLine("-------------Affine Cipher-------------");
+            //Cesar(5, 7, "CRYPTOGRAPHY");
+            //CesarDecrypt(5, 7, "TURGIZVUFGCR");
+            //Console.WriteLine();
+
+            ////Vigenere
+            //Console.WriteLine("-------------Vigenere Cipher-------------");
+            //Vigenere("BREAK", "CRYPTOGRAPHY");
+            //VigenereDecrypt("BREAK", "DICPDPXVAZIP");
+            //Console.WriteLine();
+
+            //LSFR
+            Console.WriteLine("-------------LFSR Generator-------------");
+            int[] taps = new int[2] { 1, 4 };
+            String number = LFSR("1000", taps);
+            Console.WriteLine("Generated Number with LFSR: " + number);
             Console.WriteLine();
 
-            //Matrix 2a
-            Console.WriteLine("-------------Matrix 2a-------------");
-            Matrix("34152", "CRYPTOGRAPHYOSA");
-            MatrixDecrypt("34152", "YPCTRRAOPGOSHAY");
-            Console.WriteLine();
-
-            //Matrix 2b
-            Console.WriteLine("-------------Matrix 2b-------------");
-            Matrix2("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
-            Matrix2Decrypt("CONVENIENCE", "HECRNCEYIISEPSGDIRNTOAAESRMPNSSROEEBTETIAEEHS");
-            Console.WriteLine();
-
-            //Matrix 2c
-            Console.WriteLine("-------------Matrix 2c-------------");
-            Matrix3("CONVENIENCE", "HEREISASECRETMESSAGEENCIPHEREDBYTRANSPOSITION");
-            Matrix3Decrypt("CONVENIENCE", "HEESPNIRRSSEESEIYASCBTEMGEPNANDICTRTAHSOIEERO");
-            Console.WriteLine();
-
-            //Cesar
-            Console.WriteLine("-------------Affine Cipher-------------");
-            Cesar(5, 7, "CRYPTOGRAPHY");
-            CesarDecrypt(5, 7, "TURGIZVUFGCR");
-            Console.WriteLine();
-
-            //Vigenere
-            Console.WriteLine("-------------Vigenere Cipher-------------");
-            Vigenere("BREAK", "CRYPTOGRAPHY");
-            VigenereDecrypt("BREAK", "DICPDPXVAZIP");
-            Console.WriteLine();
         }
 
 
@@ -753,5 +762,38 @@ namespace CryptoAlgorithms
 
             return k0;
         }
+
+
+
+
+
+        public static String LFSR(String seed, int[] taps)
+        {
+            String state = seed;
+            int xor = 0;
+            String generatedNumber = "";
+            do
+            {
+                for (int i = 0; i < taps.Length; i++)
+                {
+                    xor += Convert.ToInt32(state[taps[i] - 1]) - '0'; 
+                }
+
+                xor %= 2;
+
+                Console.WriteLine("state: " + state);
+
+                state = state.Insert(0, xor.ToString());
+                state = state.Remove(4, 1);
+
+
+                generatedNumber += xor.ToString();
+
+                xor = 0;
+            } while (!state.Equals(seed));
+
+            return generatedNumber;
+        }
+
     }
 }

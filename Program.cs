@@ -48,8 +48,10 @@ namespace CryptoAlgorithms
             //LSFR
             Console.WriteLine("-------------LFSR Generator-------------");
             int[] taps = new int[2] { 1, 4 };
-            String number = LFSR("1000", taps);
-            Console.WriteLine("Generated Number with LFSR: " + number);
+            //String number = LFSR("1101", taps);
+            //Console.WriteLine("Generated Number with LFSR: " + number);
+            //SynchronousEncode("11101001", "0010", taps);
+            SynchronousDecode("10010011", "0010", taps);
             Console.WriteLine();
 
         }
@@ -793,6 +795,38 @@ namespace CryptoAlgorithms
             } while (!state.Equals(seed));
 
             return generatedNumber;
+        }
+
+        public static void SynchronousEncode(String X, String seed, int[] taps)
+        {
+
+            String LFSRnumber = LFSR(seed, taps);
+            String result = "";
+            
+            for (int i = 0; i < X.Length; i++)
+            {
+                result += ((Convert.ToInt32(X[i]) - '0') ^ (Convert.ToInt32(LFSRnumber[i]) - '0')).ToString();
+            }
+
+            Console.WriteLine("wynik: " + result);
+
+
+        }
+
+        public static void SynchronousDecode(String Y, String seed, int[] taps)
+        {
+
+            String LFSRnumber = LFSR(seed, taps);
+            String result = "";
+
+            for (int i = 0; i < Y.Length; i++)
+            {
+                result += ((Convert.ToInt32(Y[i]) - '0') ^ (Convert.ToInt32(LFSRnumber[i]) - '0')).ToString();
+            }
+
+            Console.WriteLine("wynik: " + result);
+
+
         }
 
     }

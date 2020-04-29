@@ -51,7 +51,9 @@ namespace CryptoAlgorithms
             //String number = LFSR("1101", taps);
             //Console.WriteLine("Generated Number with LFSR: " + number);
             //SynchronousEncode("11101001", "0010", taps);
-            SynchronousDecode("10010011", "0010", taps);
+            //SynchronousDecode("10010011", "0010", taps);
+            //AutokeyEncode("11101001", "0011", taps);
+            AutokeyDecode("0110100011100101", "0011", taps);
             Console.WriteLine();
 
         }
@@ -826,6 +828,68 @@ namespace CryptoAlgorithms
 
             Console.WriteLine("wynik: " + result);
 
+
+        }
+
+        public static void AutokeyEncode(String X, String seed, int[] taps)
+        {
+            String result = "";
+            String state = seed;
+
+            int Z = 0;
+            int tmp;
+            int index = 0;
+
+            do
+            {
+                for (int i = 0; i < taps.Length; i++)
+                {
+                    Z += Convert.ToInt32(state[taps[i] - 1]) - '0';
+                }
+
+                Z %= 2;
+
+                tmp = (Convert.ToInt32(X[index++]) - '0') ^ Z;
+
+                state = state.Insert(0, tmp.ToString());
+                state = state.Remove(4, 1);
+
+                result += tmp.ToString();
+
+                Z = 0;
+
+            } while (X.Length != result.Length);
+
+            Console.WriteLine("Wynik: " + result);
+        }
+
+        public static void AutokeyDecode(String Y, String seed, int[] taps)
+        {
+            String result = "";
+            String state = seed;
+            int Z = 0;
+            int index = 0;
+
+            do
+            {
+
+                for (int i = 0; i < taps.Length; i++)
+                {
+                    Z += Convert.ToInt32(state[taps[i] - 1]) - '0';
+                }
+
+                Z %= 2;
+
+                result += ((Convert.ToInt32(Y[index]) - '0') ^ Z).ToString();
+
+                state = state.Insert(0, Y[index++].ToString());
+                state = state.Remove(4, 1);
+
+                Z = 0;
+
+            } while (Y.Length != result.Length);
+
+            Console.WriteLine("Wynil: " + result);
 
         }
 

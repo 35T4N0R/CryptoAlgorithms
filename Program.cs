@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CryptoAlgorithms
@@ -214,14 +215,18 @@ namespace CryptoAlgorithms
 
             //DES
             //Console.WriteLine("-------------DES-------------");
-            List<String> keys = DESKeyGenerate("XDXDXDXD");
-            int idx = 1;
+            List<String> keys = DESKeyGenerate("klucz987"); //generowanie kluczy
+
+            //wypisanie wygenerowanych kluczy
+            //int idx = 1;
             //foreach(String s in keys)
             //{
             //    Console.WriteLine("Key " + idx++ + " : " + s);
             //}
-            DESEncode(keys, "ABCDEFGH");
 
+            String result = DESEncode(keys, "tekst123"); // zakodowanie wiadomości
+            Console.WriteLine("Encrypted text in HEX: " + result); // wypisanie zakodowanej wiadomości w hex
+            DESDecryption(keys, result); // odkodowanie zakodowanej wiadomości przekazanej jako hex (format przekazanej wiadomości: 11-22-33-44-55-66-77-88)
         }
 
 
@@ -1084,9 +1089,9 @@ namespace CryptoAlgorithms
             String left_key_part = permutated_key.Substring(0,permutated_key.Length / 2);
             String right_key_part = permutated_key.Substring(permutated_key.Length / 2, permutated_key.Length / 2);
 
-            Console.WriteLine("Left part of the key: " + left_key_part);
-            Console.WriteLine("Right part of the key: " + right_key_part);
-            Console.WriteLine();
+            //Console.WriteLine("Left part of the key: " + left_key_part);
+            //Console.WriteLine("Right part of the key: " + right_key_part);
+            //Console.WriteLine();
 
             String left_value;
             String right_value;
@@ -1115,7 +1120,7 @@ namespace CryptoAlgorithms
             return keys;
         }
 
-        public static void DESEncode(List<String> keys, String text)
+        public static String DESEncode(List<String> keys, String text)
         {
             String binary_text = "";
             foreach (char c in text)
@@ -1123,7 +1128,7 @@ namespace CryptoAlgorithms
                 binary_text += Convert.ToString(c, 2).PadLeft(8, '0');
             }
 
-            Console.WriteLine("Text in binary form: " + binary_text);
+            //Console.WriteLine("Text in binary form: " + binary_text);
 
             String permutated_text = "";
             for (int i = 0; i < des_permutation_1.Length; i++)
@@ -1131,7 +1136,7 @@ namespace CryptoAlgorithms
                 permutated_text += binary_text[des_permutation_1[i] - 1];
             }
 
-            Console.WriteLine("Permutated binary text: " + permutated_text);
+            //Console.WriteLine("Permutated binary text: " + permutated_text);
 
             String left_part = permutated_text.Substring(0, permutated_text.Length / 2);
             String right_part = permutated_text.Substring(permutated_text.Length / 2, permutated_text.Length / 2);
@@ -1199,14 +1204,110 @@ namespace CryptoAlgorithms
             String hex_result = "";
             for (int i = 0; i < permutated_result.Length / 8; i++)
             {
-                hex_result += Convert.ToString(Convert.ToInt32(permutated_result.Substring(i * 8, 8), 2), 16).PadLeft(2,'0') + "-";
+                hex_result += Convert.ToString(Convert.ToInt32(permutated_result.Substring(i * 8, 8), 2), 16).PadLeft(2,'0') + '-';
             }
             hex_result = hex_result.Remove(hex_result.Length - 1, 1);
 
-            Console.WriteLine("Result in HEX: " + hex_result);
-
-
-
+            return hex_result;
         }
+
+
+        public static void DESDecryption(List<String> keys, String textInHEX)
+        {
+            keys.Reverse();
+
+            string[] hex_ar = textInHEX.Split('-');
+
+            string binary_text = "";
+            foreach (string s in hex_ar)
+            {
+                binary_text += Convert.ToString(Convert.ToInt32(s, 16), 2).PadLeft(8, '0');
+            }
+
+            //Console.WriteLine("binary form hex: " + binary_text);
+
+
+            String permutated_text = "";
+            for (int i = 0; i < des_permutation_1.Length; i++)
+            {
+                permutated_text += binary_text[des_permutation_1[i] - 1];
+            }
+
+            //Console.WriteLine("Permutated binary text: " + permutated_text);
+
+            String left_part = permutated_text.Substring(0, permutated_text.Length / 2);
+            String right_part = permutated_text.Substring(permutated_text.Length / 2, permutated_text.Length / 2);
+
+
+            String column_binary;
+            String row_binary;
+            int column;
+            int row;
+            int value;
+
+            foreach (String key in keys)
+            {
+                String expanded_right_part = "";
+                for (int i = 0; i < expand_permutation.Length; i++)
+                {
+                    expanded_right_part += right_part[expand_permutation[i] - 1];
+                }
+
+                String key_after_xor = "";
+                for (int j = 0; j < key.Length; j++)
+                {
+                    key_after_xor += Convert.ToString(((expanded_right_part[j] - '0') + (key[j] - '0')) % 2);
+                }
+
+                String shirnked_right_part = "";
+                for (int i = 0; i < blocks.GetUpperBound(0) + 1; i++)
+                {
+                    row_binary = Convert.ToString(key_after_xor[i * 6]) + Convert.ToString(key_after_xor[(i * 6) + 5]);
+                    column_binary = key_after_xor.Substring((i * 6) + 1, 4);
+
+                    column = Convert.ToInt32(column_binary, 2);
+                    row = Convert.ToInt32(row_binary, 2);
+
+                    value = blocks[i, row, column];
+
+                    shirnked_right_part += Convert.ToString(value, 2).PadLeft(4, '0');
+                }
+
+                String permutated_shrinked_right_part = "";
+                for (int i = 0; i < permutation_after_blocks.Length; i++)
+                {
+                    permutated_shrinked_right_part += shirnked_right_part[permutation_after_blocks[i] - 1];
+                }
+
+                String right_part_xored = "";
+                for (int j = 0; j < left_part.Length; j++)
+                {
+                    right_part_xored += Convert.ToString(((permutated_shrinked_right_part[j] - '0') + (left_part[j] - '0')) % 2);
+                }
+
+                left_part = right_part;
+                right_part = right_part_xored;
+
+            }
+
+            String result = right_part + left_part;
+
+            String permutated_result = "";
+            for (int i = 0; i < final_permutation.Length; i++)
+            {
+                permutated_result += result[final_permutation[i] - 1];
+            }
+
+            String hex_result = "";
+            for (int i = 0; i < permutated_result.Length / 8; i++)
+            {
+                hex_result += Convert.ToString(Convert.ToInt32(permutated_result.Substring(i * 8, 8), 2), 16).PadLeft(2, '0') + "-";
+            }
+            hex_result = hex_result.Remove(hex_result.Length - 1, 1);
+
+            Console.WriteLine("Decrypted text in HEX: " + hex_result);
+        }
+
+
     }
 }

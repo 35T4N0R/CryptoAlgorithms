@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace CryptoAlgorithms
 {
@@ -93,7 +94,7 @@ namespace CryptoAlgorithms
                 {7,11,4,1,9,12,14,2,0,6,10,13,15,3,5,8},
                 {2,1,14,7,4,10,8,13,15,12,9,0,3,5,6,11}
             }
-    };
+        };
 
         #region blocks
         private static int[,] block_S1 = new int[,]
@@ -202,29 +203,56 @@ namespace CryptoAlgorithms
             //VigenereDecrypt("BREAK", "DICPDPXVAZIP");
             //Console.WriteLine();
 
-            ////LSFR
+            //LSFR
             //Console.WriteLine("-------------LFSR Generator and stream ciphers-------------");
-            //int[] taps = new int[] { 1, 3, 4 };
+            //int[] taps = new int[] { 1, 4 };
             //String number = LFSR("0110", taps);
             ////Console.WriteLine("Generated Number with LFSR: " + number);
-            //SynchronousEncode("11101011", "0110", taps);
-            //SynchronousDecode("00110000", "0110", taps);
-            //AutokeyEncode("11101011", "0110", taps);
-            //AutokeyDecode("01111101", "0110", taps);
+            ////SynchronousEncode("11101001", "0010", taps);
+            ////SynchronousDecode("10010011", "0010", taps);
+            ////AutokeyEncode("11101001", "0011", taps);
+            //AutokeyDecode("00110011", "0011", taps);
             ////Console.WriteLine();
 
             //DES
             Console.WriteLine("-------------DES-------------");
-            List<String> keys = DESKeyGenerate("abcd"); //generowanie kluczy
 
-            //////wypisanie wygenerowanych kluczy
-            ////int idx = 1;
-            ////foreach (String s in keys)
-            ////{
-            ////    Console.WriteLine("Key " + idx++ + " : " + s);
-            ////}
-            Console.WriteLine("Kodowany teskt: At1fsafafs421fssss");
-            String result = DESEncode(keys, "At1fsafafs421fssss"); // zakodowanie wiadomości
+            //czytanie danych z pliku biinarnego
+            String message, key, result;
+            using (BinaryWriter writer = new BinaryWriter(File.Open("data.bin", FileMode.Create)))
+            {
+                writer.Flush();
+                writer.Write("tekst123456");
+                writer.Write("klucz123");
+            }
+
+            using (BinaryReader reader = new BinaryReader(File.Open("data.bin", FileMode.Open)))
+            {
+                message = reader.ReadString();
+                key = reader.ReadString();
+            }
+
+            Console.WriteLine("Odczytana wiadomość z pliku: " + message);
+            Console.WriteLine("Odczytany klucz z pliku: " + key);
+
+
+
+            List<String> keys = DESKeyGenerate(key); //generowanie kluczy
+
+            //wypisanie wygenerowanych kluczy
+            //int idx = 1;
+            //foreach (String s in keys)
+            //{
+            //    Console.WriteLine("Key " + idx++ + " : " + s);
+            //}
+            //Console.WriteLine("Kodowany teskt: " + message);
+            result = DESEncode(keys, message); // zakodowanie wiadomości
+            using (BinaryWriter writer = new BinaryWriter(File.Open("result.bin", FileMode.Create)))
+            {
+                writer.Flush();
+                writer.Write(result);
+
+            }
             Console.WriteLine("Encrypted text in HEX: " + result); // wypisanie zakodowanej wiadomości w hex
             DESDecryption(keys, result); // odkodowanie zakodowanej wiadomości przekazanej jako hex (format przekazanej wiadomości: 11-22-33-44-55-66-77-88)
         }
